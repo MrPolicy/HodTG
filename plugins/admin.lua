@@ -261,8 +261,8 @@ end
 	if matches[1] == 'reload' then
 		receiver = get_receiver(msg)
 		reload_plugins(true)
-		post_msg(receiver, ok_cb, false)
-		return reply_msg(msg.id, "#BOT Reloaded By |"..msg.from.id.."| \n#All Plugins Reloaded! \n#All Changes Succesfully Installed.", ok_cb, false)
+		post_msg(receiver, "Reloaded!", ok_cb, false)
+		return "Reloaded!"
 	end
 	--[[*For Debug*
 	if matches[1] == "vardumpmsg" and is_admin1(msg) then
@@ -329,6 +329,4 @@ return {
   run = run,
   pre_process = pre_process
 }
-
-
 
