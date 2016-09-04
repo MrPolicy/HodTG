@@ -964,6 +964,14 @@ function show_supergroup_settingsmod(msg, target)
 			data[tostring(target)]['settings']['etehad'] = 'no'
 		end
 	end
+	  	local expiretime = redis:hget('expiretime', get_receiver(msg))
+    local expire = ''
+  if not expiretime then
+  expire = expire..'Not Set!'
+  else
+   local now = tonumber(os.time())
+   expire =  expire..math.floor((tonumber(expiretime) - tonumber(now)) / 86400) + 1
+ end
   local gp_type = data[tostring(msg.to.id)]['group_type']
   local muter = redis:get('muter:'..msg.from.id)
   if muter then
@@ -978,7 +986,7 @@ function show_supergroup_settingsmod(msg, target)
   	mute_fwd = 'no'
   end
   local settings = data[tostring(target)]['settings']
-  local text = "____________________\n⚙SuperGroup settings⚙:⬇️\n____________________\n>Lock links : "..settings.lock_link.."\n>Lock contacts: "..settings.lock_contacts.."\n>Lock flood: "..settings.flood.."\n>Flood sensitivity : "..NUM_MSG_MAX.."\n>Lock spam: "..settings.lock_spam.."\n>Lock Arabic: "..settings.lock_arabic.."\n>Lock Member: "..settings.lock_member.."\n>Lock RTL: "..settings.lock_rtl.."\n>Lock Tgservice: "..settings.lock_tgservice.."\n>Lock sticker: "..settings.lock_sticker.."\n>Lock tag(#): "..settings.tag.."\n>Lock emoji: "..settings.emoji.."\n>Lock english: "..settings.english.."\n>Lock fwd(forward): "..mute_fwd.."\n>Lock reply: "..mute_reply.."\n>Lock join: "..settings.join.."\n>Lock username(@): "..settings.username.."\n>Lock media: "..settings.media.."\n>Lock fosh: "..settings.fosh.."\n>Lock leave: "..settings.leave.."\n>Lock bots: "..bots_protection.."\n>Lock operator: "..settings.operator.."\n____________________\n⚙Easy Sweet&Faster Switch⚙:⬇️\n____________________\n>Switch Model Etehad: "..settings.etehad.."\n>Lock all: "..settings.all.."\n____________________\nℹ️About Groupℹ️:⬇️\n____________________\n>group type: "..gp_type.."\n>Public: "..settings.public.."\n>Strict settings: "..settings.strict.."\n____________________\n>>bot version : v2.9<<\n>>>👑MeGa shield👑<<<\n>>@shieldTM<<"
+  local text = "\n⚙SuperGroup settings⚙\n➖➖➖➖➖➖➖➖➖\n🗝Lock links : "..settings.lock_link.."\n🗝Lock contacts: "..settings.lock_contacts.."\n🗝Lock flood: "..settings.flood.."\n🗝Flood sensitivity : "..NUM_MSG_MAX.."\n🗝Lock spam: "..settings.lock_spam.."\n🗝Lock Arabic: "..settings.lock_arabic.."\n🗝Lock Member: "..settings.lock_member.."\n🗝Lock RTL: "..settings.lock_rtl.."\n🗝Lock Tgservice: "..settings.lock_tgservice.."\n🗝Lock sticker: "..settings.lock_sticker.."\n🗝Lock tag(#): "..settings.tag.."\n🗝Lock emoji: "..settings.emoji.."\n🗝Lock english: "..settings.english.."\n🗝Lock fwd(forward): "..mute_fwd.."\n🗝Lock reply: "..mute_reply.."\n🗝Lock join: "..settings.join.."\n🗝Lock username(@): "..settings.username.."\n🗝Lock media: "..settings.media.."\n🗝Lock fosh: "..settings.fosh.."\n🗝Lock leave: "..settings.leave.."\n🗝Lock bots: "..bots_protection.."\n🗝Lock operator: "..settings.operator.."\n🔑Lock all: "..settings.all.."\n➖➖➖➖➖➖➖➖➖\n☢About Group☢\n➖➖➖➖➖➖➖➖➖\n🖥Switch Model Etehad: "..settings.etehad.."\n🖥group type: "..gp_type.."\n🖥Public: "..settings.public.."\n🖥Strict settings: "..settings.strict.."\n🖥Date > "..expire.."\n➖➖➖➖➖➖➖➖➖\n▪️bot version : v4.4\n▪HodTG\n▪️@HodTeam"
   return text
 end
 
@@ -1681,7 +1689,7 @@ local function run(msg, matches)
 				resolve_username(username,  callbackres, cbres_extra)
 			else
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] requested SuperGroup ID")
-				return ">Your Name: " ..string.gsub(msg.from.print_name, "_", " ").. "\n>Your Username: @"..(msg.from.username or '----').."\n>Your ID: "..msg.from.id.."\n\n>SuperGroup Name: " ..string.gsub(msg.to.print_name, "_", " ").. "\n>SuperGroup ID: "..msg.to.id
+				return "⚔Your Name: " ..string.gsub(msg.from.print_name, "_", " ").. "\n⚔Your Username: @"..(msg.from.username or '----').."\n⚔Your ID: "..msg.from.id.."\n\n⚔SuperGroup Name: " ..string.gsub(msg.to.print_name, "_", " ").. "\n⚔SuperGroup ID: "..msg.to.id
 			end
 		end
 
@@ -2549,7 +2557,7 @@ local function run(msg, matches)
 		end
 
 		if matches[1] == 'help' and not is_owner(msg) then
-			text = "Message /superhelp to @antispam_shield in private for SuperGroup help"
+			text = "\n"
 			reply_msg(msg.id, text, ok_cb, false)
 		elseif matches[1] == 'help' and is_owner(msg) then
 			local name_log = user_print_name(msg.from)
@@ -2684,4 +2692,9 @@ return {
   run = run,
   pre_process = pre_process
 }
+
+
+
+
+
 
